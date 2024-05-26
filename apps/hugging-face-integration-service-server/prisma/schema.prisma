@@ -1,0 +1,30 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tokenization {
+  accessToken      String?
+  createdAt        DateTime @default(now())
+  id               String   @id @default(cuid())
+  model            Model?   @relation(fields: [modelId], references: [id])
+  modelId          String?
+  tokenizationName String?
+  tokenizationType String?
+  updatedAt        DateTime @updatedAt
+}
+
+model Model {
+  accessToken   String?
+  createdAt     DateTime       @default(now())
+  id            String         @id @default(cuid())
+  modelName     String?
+  modelPath     String?
+  modelType     String?
+  tokenizations Tokenization[]
+  updatedAt     DateTime       @updatedAt
+}
